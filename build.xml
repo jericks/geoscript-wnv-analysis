@@ -1,0 +1,40 @@
+<project name="WNV" default="build">
+    
+    <target name="readpdf">
+        <exec executable="geoscript-groovy">
+            <arg value="readpdf.groovy"/>
+        </exec>
+    </target>
+
+    <target name="parsetext" depends="readpdf">
+        <exec executable="geoscript-groovy">
+            <arg value="parsetext.groovy"/>
+        </exec>
+    </target>
+
+    <target name="downloadshp" depends="parsetext">
+        <exec executable="geoscript-groovy">
+            <arg value="downloadshp.groovy"/>
+        </exec>
+    </target>
+
+    <target name="addtoshp" depends="downloadshp">
+        <exec executable="geoscript-groovy">
+            <arg value="addtoshp.groovy"/>
+        </exec>
+    </target>
+
+    <target name="drawmaps" depends="addtoshp">
+        <exec executable="geoscript-groovy">
+            <arg value="drawmaps.groovy"/>
+        </exec>
+    </target>
+    
+    <target name="clean">
+        <delete dir="data"/>
+        <delete dir="images"/>
+    </target>
+
+    <target name="build" depends="clean, drawmaps"/>
+
+</project>
